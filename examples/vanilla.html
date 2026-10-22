@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Adsun Mini App example</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://api.adsun.io/sdk.js"></script>
+  </head>
+  <body>
+    <button id="ad">Show ad</button>
+    <adsun-task data-block-id="task-50003" data-debug="true" class="task">
+      <p slot="reward">+100</p>
+      <div slot="button">go</div>
+      <div slot="claim">claim</div>
+      <div slot="done">done</div>
+    </adsun-task>
+    <script>
+      const AdController = window.Adsun.init({ blockId: "50001", debug: true });
+      document.getElementById("ad").addEventListener("click", () => {
+        AdController.show()
+          .then(() => alert("Reward"))
+          .catch((result) => alert(JSON.stringify(result, null, 4)));
+      });
+      const task = document.querySelector(".task");
+      task.addEventListener("reward", (e) => alert(`Reward in block ${e.detail}`));
+      task.addEventListener("onError", (e) => alert(`Error for block ${e.detail}`));
+      task.addEventListener("onBannerNotFound", (e) => alert(`No banner for block ${e.detail}`));
+      task.addEventListener("onTooLongSession", () => alert("Session too long, restart the app"));
+    </script>
+  </body>
+</html>
